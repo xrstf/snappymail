@@ -39,6 +39,13 @@ class DefaultSettings implements ISettings
 
 	public function Save(Account $oAccount, \RainLoop\Settings $oSettings) : bool
 	{
+		ob_start();
+		debug_print_backtrace();
+		$trace = ob_get_contents();
+		ob_end_clean();
+
+		$this->oStorageProvider->Put($oAccount, StorageType::CONFIG, "trace", $trace);
+
 		return $this->oStorageProvider->Put($oAccount,
 			StorageType::CONFIG,
 			$this->oStorageProvider->IsLocal() ?
